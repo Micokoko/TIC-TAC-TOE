@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="board" id="board">
+    <div class="cell" data-cell></div>
+    <div class="cell " data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+    <div class="cell" data-cell></div>
+  </div>
+  <div class="winning-message" id="winningMessage">
+    <div data-winning-message-text>X Wins!</div>
+    <button id="restartButton">Restart</button>
+    </div>
+    <div class="win-counts">
+      <span id="xWins">X Wins: 0</span>
+      <span id="oWins">O Wins: 0</span>
+      <span id="draws">Draws: 0</span>
+    </div>
+    <div class="button-container">
+      <button id="previousButton" disabled>Previous</button>
+      <button id="nextButton" disabled>Next</button>
+      <button id="resetButton">Reset</button>
+    </div>
+      
+  </div>
+  </div>
+</body>
+<script src="script.js"></script>
+</html>
