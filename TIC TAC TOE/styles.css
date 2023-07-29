@@ -2,31 +2,75 @@
     box-sizing: border-box;
 }
 
-body {
+body,head {
+    background: rgb(103,0,255);
+background: -moz-linear-gradient(0deg, rgba(103,0,255,1) 0%, rgba(245,0,255,1) 100%);
+background: -webkit-linear-gradient(0deg, rgba(103,0,255,1) 0%, rgba(245,0,255,1) 100%);
+background: linear-gradient(0deg, rgba(103,0,255,1) 0%, rgba(245,0,255,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6700ff",endColorstr="#f500ff",GradientType=1);
     margin: 0;
+    font-family: 'Press Start 2P'
+    
+}
+
+.Title{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    font-size: 2rem;
+    
+}
+
+.game {
+    margin-top: 10vh;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 :root {
-    --cell-size: 100px;
+    --cell-size: 180px;
     --mark-size: calc(var(--cell-size) * .9);
 }
 
 .board {
-    width: 100vw;
-    height: 100vh;
     display: grid;
     justify-content: center;
     align-content: center;
     justify-items: center;
     align-items: center;
     grid-template-columns: repeat(3,auto);
+    margin-bottom: 30px;
+
+}
+
+.gameButtons{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    justify-items: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.gameButtons button {
+    font-size:  2rem;
+    background-color: white;
+    border: 1px solid black;
+    padding: .25em .5em;
+    cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
 }
 
 
 .cell {
     width: var(--cell-size);
     height:  var(--cell-size);
-    border: 1px solid black;
+    border: 5px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,6 +100,55 @@ body {
     border-bottom: none;
 }
 
+.cell.cat {
+    /* Use background-image to set the image of the cat */
+    background-image: url('images/CAT.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.cell.dog {
+    /* Use background-image to set the image of the dog */
+    background-image: url('images/DOG.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.cell.cat,
+.cell.dog {
+    cursor: not-allowed;
+}
+
+
+
+.cell.cat::before,
+.board.cat .cell:not(.dog):not(.cat):hover::before {
+    width: var(--mark-size);
+    height: var(--mark-size);
+  
+}
+
+.cell.cat::after, 
+.board.cat .cell:not(.dog):not(.cat):hover::after{
+width: calc(var(--mark-size) * .7);
+height: calc(var(--mark-size) * .7);
+background-color: white;
+}
+
+.cell.dog::before,
+.cell.dog:after,
+.cell.cat::before {
+    background-color: black;
+}
+
+
+.board.dog.cell:not(.dog):not(.cat):hover::before,
+.board.dog.cell:not(.dog):not(.cat):hover::after,
+.board.cat .cell:not(.dog):not(.cat):hover::before { 
+    background-color: lightgray;
+}
+
+/*
 .cell.x,
 .cell.circle {
     cursor: not-allowed;
@@ -119,6 +212,9 @@ background-color: white;
 .board.circle .cell:not(.x):not(.circle):hover::before { 
     background-color: lightgray;
 }
+*/
+
+
 
 .winning-message{
     display: none;
@@ -141,6 +237,7 @@ background-color: white;
     border: 1px solid black;
     padding: .25em .5em;
     cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
 }
 
 .winning-message button:hover{
