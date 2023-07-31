@@ -1,14 +1,22 @@
 const X_CLASS = 'dog'
 const CIRCLE_CLASS = 'cat'
-const cellElements = document.querySelectorAll('[data-cell')
+const cellElements = document.querySelectorAll('[data-cell]')
 const board = document.getElementById('board')
 const winningMessageElement = document.getElementById('winningMessage')
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]')
 const winningImageElement = document.getElementById('winningImage');
 const winningAudioElement = document.getElementById('winningAudio')
 const desiredDuration = 7;
+const matchReview = document.getElementById('match-review')
+
+let dogeWins = 0;
+let catWins = 0;
+let draws = 0;
 
 let circleTurn 
+let moves = []; 
+let currentMove = -1;
+
 
 const WINNING_COMBINATIONS = [
         // Rows
@@ -25,39 +33,126 @@ const WINNING_COMBINATIONS = [
 ]
 const restartButton1 = document.getElementById ('restartButton')
 const restartButton2 = document.getElementById ('restartButtonOnScreen')
+const restartButton3 = document.getElementById ('restartButtonMatchRev')
+const previousButton = document.getElementById('previousButton');
+const nextButton = document.getElementById('nextButton');
+const matchHistoryButton = document.getElementById('matchHistory');
 
 startGame()
 
+
+
 restartButton1.addEventListener('click', startGame)
 restartButton2.addEventListener('click', startGame)
+restartButton3.addEventListener('click', startGame)
+previousButton.addEventListener('click', showPreviousMove);
+nextButton.addEventListener('click', showNextMove);
+matchHistoryButton.addEventListener('click', showMatchHistory);
+
+
 
 function startGame(){
     circleTurn = false
+    //Clears cells if there are any elements inside//
     cellElements.forEach(cell => {
     cell.classList.remove(X_CLASS)
     cell.classList.remove(CIRCLE_CLASS)
     cell.removeEventListener('click',handleClick)
     cell.addEventListener('click', handleClick, {once: true })
+
     })
+
+    //ends any ongoing audio in the back ground if endgame phase is trigggered//
     setBoardHoverClass()
     winningMessageElement.classList.remove('show')
     winningAudioElement.pause();
     winningAudioElement.currentTime = 0
+
+    //following DOMs below will trigger if reset button in endgame or match history was triggered//
+    document.querySelector('.win-counts').style.display = 'flex'
+    document.querySelector('.gameButtons').style.display = 'flex'
+    document.querySelector('.matchReview').style.display = 'none';
 }
 
-function handleClick (e){
-    const cell = e.target
-    const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS
-    placeMark(cell, currentClass)
-    if (checkWin(currentClass)){
-        console.log('Winner')
-        endGame (false)
+
+function handleClick(e) {
+    const cell = e.target;
+    const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
+    const move = {
+      cellIndex: Array.from(cellElements).indexOf(e.target),
+      player: currentClass,
+    };
+    moves.push(move);
+
+    //determins decides who is the winner or if the game is a draw//
+    //adds to win counter as well//
+    placeMark(cell, currentClass);
+    if (checkWin(currentClass)) {
+      if(currentClass===X_CLASS) {
+        dogeWins++
+      } else {
+        catWins++
+      }
+      updateWinCount();
+      console.log('Winner');
+      endGame(false);
     } else if (isDraw()) {
-        endGame(true)
-    } else { swapTurns()
-    setBoardHoverClass()
+      draws++
+      updateWinCount()
+      endGame(true);
+    } else {
+      swapTurns();
+      setBoardHoverClass();
     }
   
+  }
+
+function showMatchHistory() {
+  currentMove = -1;
+  showNextMove();
+  winningMessageElement.classList.remove('show');
+  board.style.display = 'grid';
+  winningAudioElement.pause();
+  winningAudioElement.currentTime = 0
+  document.querySelector('.win-counts').style.display = 'none'
+  document.querySelector('.gameButtons').style.display = 'none';
+  document.querySelector('.matchReview').style.display = 'flex';
+}
+  
+function showPreviousMove() {
+  if (currentMove > 0) {
+    currentMove--;
+    showMove(currentMove);
+  }
+}
+
+function showNextMove() {
+  if (currentMove < moves.length - 1) {
+    currentMove++;
+    showMove(currentMove);
+  }
+}
+
+function showMove(moveIndex) {
+  // Clear the board first
+  cellElements.forEach((cell) => {
+    cell.classList.remove(X_CLASS, CIRCLE_CLASS);
+  });
+
+  // Show moves up to the specified index
+  for (let i = 0; i <= moveIndex; i++) {
+    const move = moves[i];
+    const cell = cellElements[move.cellIndex];
+    placeMark(cell, move.player);
+  }
+
+  // Update the board hover class based on the last move
+  circleTurn = moves[moveIndex].player === CIRCLE_CLASS;
+  setBoardHoverClass();
+
+  // Enable/disable Previous and Next buttons
+  previousButton.disabled = moveIndex === 0;
+  nextButton.disabled = moveIndex === moves.length - 1;
 }
 
 function endGame(draw) {
@@ -103,7 +198,6 @@ function isDraw (){
 function placeMark(cell, currentClass) {
     cell.classList.add(currentClass);
   
-    // Check if it's a cat or dog and play the appropriate sound
     if (currentClass === CIRCLE_CLASS) {
       placeCatOrDogInCell(cell, "cat");
     } else if (currentClass === X_CLASS) {
@@ -116,6 +210,7 @@ function swapTurns() {
 }
 
 function setBoardHoverClass(){
+  
     board.classList.remove(X_CLASS)
     board.classList.remove(CIRCLE_CLASS)
     if (circleTurn){
@@ -123,6 +218,8 @@ function setBoardHoverClass(){
         } else {
         board.classList.add(X_CLASS)
         }
+      
+    
 }
 
 function checkWin (currentClass) {
@@ -146,4 +243,15 @@ function placeCatOrDogInCell(cell, type) {
   } else if (type === "dog") {
     dogSound.play();
   }
+}
+
+
+
+function updateWinCount() {
+  const dogeWinsElement = document.getElementById('doge-Wins');
+  const catWinsElement = document.getElementById('cat-Wins');
+  const drawsElement = document.getElementById('draws');
+  dogeWinsElement.innerText = ` Doge Wins: ${dogeWins} `;
+  catWinsElement.innerText = ` Cat Wins: ${catWins} `;
+  drawsElement.innerText = ` Draws: ${draws}`;
 }

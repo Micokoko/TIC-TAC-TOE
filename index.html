@@ -16,7 +16,8 @@
  </div> 
  <div class="game">
   <div class="board" id="board">
-    <div class="cell dog" data-cell></div>
+    
+    <div class="cell" data-cell></div>
     <div class="cell" data-cell></div>
     <div class="cell" data-cell></div>
     <div class="cell" data-cell></div>
@@ -27,19 +28,33 @@
     <div class="cell" data-cell></div>
   </div>  
   <div class="gameButtons">
-    <button id="previousbuttonOn"> < </button>  
-    
     <button id="restartButtonOnScreen">Reset</button>
-    <button id="nextButton">></button>
   </div>
+
+  <div class="win-counts">
+    <span id="doge-Wins">Doge Wins: 0</span>
+    <span id="cat-Wins">Cat Wins: 0</span>
+    <span id="draws">Draws: 0</span>
+  </div>
+
   <div class="winning-message" id="winningMessage">
     <audio id="winningAudio" controls style="display: none;">
       <source src="" type="audio/mpeg">
     </audio>
     <img id="winningImage" src="" alt="Winning Image">
-    <div data-winning-message-text>CAT Wins!</div>
-    <button id="restartButton">PLAY AGAIN</button>
-  </div>
+      <div data-winning-message-text>CAT Wins!</div>
+      <div class="endGameButtons">
+      <button id="restartButton">PLAY AGAIN</button>
+      <button id="matchHistory">REVIEW MATCH HISTORY</button>
+      </div>
+ 
+  </div>    
+  
+    <div class="matchReview" id="match-review">
+      <button id="previousButton"> < </button>
+      <button id="restartButtonMatchRev">PLAY AGAIN</button>
+      <button id="nextButton">> </button>
+     </div> 
   <audio id="catSound" src="images/mixkit-sweet-kitty-meow-93.wav"></audio>
   <audio id="dogSound" src="images/single-dog-bark-king-charles-spaniel-41366.mp3"></audio>
 </div> 
