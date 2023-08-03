@@ -79,7 +79,8 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6700ff",endCo
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px
+    gap: 20px;
+
 }
 
 .cell {
@@ -194,7 +195,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6700ff",endCo
 }
 
 .endGameButtons{
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 
@@ -229,13 +232,18 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6700ff",endCo
     background-color: yellow;
 }
 
+footer {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
 
 
-
-@media (max-width: 844px){
+@media (max-width: 390px){
 
     .Title {
-        font-size: 1rem;
+        font-size: .9rem;
+        justify-content: center;
     }
 
     .game {
@@ -263,6 +271,9 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6700ff",endCo
     .endGameButtons button {
         font-size: 2rem;
     }
+    .endGameButtons #matchHistory{ 
+        font-size: 1.5rem;
+    }
 
     .winning-message {
         font-size: 2rem;
@@ -273,5 +284,12 @@ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6700ff",endCo
         height: auto;
     }
 
-
+    .win-counts{
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 12px;
+    }
 }

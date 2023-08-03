@@ -8,6 +8,7 @@ const winningImageElement = document.getElementById('winningImage');
 const winningAudioElement = document.getElementById('winningAudio')
 const desiredDuration = 7;
 const matchReview = document.getElementById('match-review')
+let matchHistoryActive = false
 
 let dogeWins = 0;
 let catWins = 0;
@@ -53,6 +54,7 @@ matchHistoryButton.addEventListener('click', showMatchHistory);
 
 function startGame(){
     circleTurn = false
+    matchHistoryActive = false
     //Clears cells if there are any elements inside//
     cellElements.forEach(cell => {
     cell.classList.remove(X_CLASS)
@@ -72,6 +74,7 @@ function startGame(){
     document.querySelector('.win-counts').style.display = 'flex'
     document.querySelector('.gameButtons').style.display = 'flex'
     document.querySelector('.matchReview').style.display = 'none';
+    moves = []   
 }
 
 
@@ -86,8 +89,9 @@ function handleClick(e) {
 
     //determins decides who is the winner or if the game is a draw//
     //adds to win counter as well//
-    placeMark(cell, currentClass);
-    if (checkWin(currentClass)) {
+    if (!matchHistoryActive){
+      placeMark(cell, currentClass);
+      if (checkWin(currentClass)) {
       if(currentClass===X_CLASS) {
         dogeWins++
       } else {
@@ -104,6 +108,8 @@ function handleClick(e) {
       swapTurns();
       setBoardHoverClass();
     }
+
+  }
   
   }
 
@@ -117,6 +123,12 @@ function showMatchHistory() {
   document.querySelector('.win-counts').style.display = 'none'
   document.querySelector('.gameButtons').style.display = 'none';
   document.querySelector('.matchReview').style.display = 'flex';
+  
+
+  matchHistoryActive = true;
+  setBoardHoverClass();
+  handleClick()
+
 }
   
 function showPreviousMove() {
@@ -161,7 +173,7 @@ function endGame(draw) {
         winningMessageTextElement.innerText = 'Draw!'
         winningImageElement.src = 'images/fighting.gif';
         winningImageElement.alt = 'DRAW'
-        
+        matchHistoryButton.style.display = 'none'
     } else {
         const winner = circleTurn ? 'CAT' : 'DOGE';
         winningMessageTextElement.innerText = `${winner} Wins!`;
@@ -171,11 +183,13 @@ function endGame(draw) {
             winningAudioElement.src = 'images/Cat-Vs-Dog-Fight.mp3'
             winningImageElement.src = 'images/CAT.png';
             winningImageElement.alt = 'Cat';
+            matchHistoryButton.style.display = 'flex'
             
         } else {
             winningAudioElement.src = 'images/Cat-Vs-Dog-Fight.mp3'
             winningImageElement.src = 'images/DOG.png';
             winningImageElement.alt = 'Dog';
+            matchHistoryButton.style.display = 'flex'
         }
     }
 
@@ -209,17 +223,18 @@ function swapTurns() {
     circleTurn = !circleTurn
 }
 
-function setBoardHoverClass(){
+function setBoardHoverClass() {
+  board.classList.remove(X_CLASS);
+  board.classList.remove(CIRCLE_CLASS);
   
-    board.classList.remove(X_CLASS)
-    board.classList.remove(CIRCLE_CLASS)
-    if (circleTurn){
-        board.classList.add(CIRCLE_CLASS)
-        } else {
-        board.classList.add(X_CLASS)
-        }
-      
-    
+  // Only add hover class if match history is not active
+  if (!matchHistoryActive) {
+    if (circleTurn) {
+      board.classList.add(CIRCLE_CLASS);
+    } else {
+      board.classList.add(X_CLASS);
+    }
+  }
 }
 
 function checkWin (currentClass) {
